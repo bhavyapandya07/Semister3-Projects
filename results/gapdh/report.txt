@@ -1,0 +1,44 @@
+==========================================================================
+                     GAPDH  (GAPDH)  vs  ECHOLOCATION                     
+==========================================================================
+NEGATIVE CONTROL: a housekeeping gene with no link to hearing. The scan
+should find nothing.
+
+1. DATASET (real RefSeq coding sequences)
+   Dolphin           1002 bp   333 aa  Cetacea        ECHOLOCATING
+   SpermWhale        1002 bp   333 aa  Cetacea        ECHOLOCATING
+   HorseshoeBat      1002 bp   333 aa  Chiroptera     ECHOLOCATING
+   LittleBrownBat    1002 bp   333 aa  Chiroptera     ECHOLOCATING
+   FruitBat          1002 bp   333 aa  Chiroptera     -
+   Cow               1002 bp   333 aa  Artiodactyla   -
+   Horse             1002 bp   333 aa  Perissodactyla -
+   Human             1008 bp   335 aa  Primates       -
+   Mouse             1080 bp   359 aa  Rodentia       -
+   Elephant          1002 bp   333 aa  Proboscidea    -
+   codon-aware alignment: 1077 nt / 359 codons   reference: Human
+
+2. PHYLOGENY
+   4 of 10 species are echolocating, across 2 clades:
+   Cetacea, Chiroptera
+   -> echolocation is polyphyletic here, so a residue shared by
+      all of them cannot be inherited: it is convergent.
+
+3. PhyloG2P CONVERGENCE SCAN
+   perfectly convergent sites : 0
+   permutation p-value        : 1.0000 (10,000 shuffles, null mean 0.03)
+   no perfectly convergent site. Top-scoring sites instead:
+   -> site 256: best residue E, score 0.50
+   -> site 267: best residue D, score 0.50
+   -> site 83: best residue A, score 0.50
+
+4. PAN-GENOME GRAPH
+   nodes 646  edges 901  bubbles 194
+   node classes: core 194, shell 298, cloud 154
+   bubbles: 193 substitution, 1 indel/SV
+   reference bias: 429 of 1434 bp (29.9%) of the graph is NOT
+   on the linear Human reference - invisible to a linear pipeline.
+
+5. PAN-GENOME OPENNESS (Heaps exponent; 0 = closed, 1 = wide open)
+   DNA 31-mers    : gamma = 0.849   core 0, shell 1383, cloud 5966
+   protein 7-mers : gamma = 0.299   core 145, shell 275, cloud 236
+==========================================================================

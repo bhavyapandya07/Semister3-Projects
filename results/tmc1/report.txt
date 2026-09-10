@@ -1,0 +1,41 @@
+==========================================================================
+                      TMC1  (TMC1)  vs  ECHOLOCATION                      
+==========================================================================
+Pore-forming subunit of the hair-cell mechanotransduction channel.
+
+1. DATASET (real RefSeq coding sequences)
+   Dolphin           2286 bp   761 aa  Cetacea        ECHOLOCATING
+   SpermWhale        2286 bp   761 aa  Cetacea        ECHOLOCATING
+   HorseshoeBat      2292 bp   763 aa  Chiroptera     ECHOLOCATING
+   LittleBrownBat    2286 bp   761 aa  Chiroptera     ECHOLOCATING
+   FruitBat          2286 bp   761 aa  Chiroptera     -
+   Cow               2385 bp   794 aa  Artiodactyla   -
+   Horse             2325 bp   774 aa  Perissodactyla -
+   Human             2286 bp   761 aa  Primates       -
+   Mouse             2286 bp   761 aa  Rodentia       -
+   Elephant          2667 bp   888 aa  Proboscidea    -
+   codon-aware alignment: 2862 nt / 954 codons   reference: Human
+
+2. PHYLOGENY
+   4 of 10 species are echolocating, across 2 clades:
+   Cetacea, Chiroptera
+   -> echolocation is polyphyletic here, so a residue shared by
+      all of them cannot be inherited: it is convergent.
+
+3. PhyloG2P CONVERGENCE SCAN
+   perfectly convergent sites : 2
+   permutation p-value        : 0.0037 (10,000 shuffles, null mean 0.03)
+   -> site 39: echolocating = M, others = L
+   -> site 155: echolocating = V, others = A
+
+4. PAN-GENOME GRAPH
+   nodes 1653  edges 2364  bubbles 467
+   node classes: core 466, shell 688, cloud 499
+   bubbles: 458 substitution, 9 indel/SV
+   reference bias: 1929 of 4212 bp (45.8%) of the graph is NOT
+   on the linear Human reference - invisible to a linear pipeline.
+
+5. PAN-GENOME OPENNESS (Heaps exponent; 0 = closed, 1 = wide open)
+   DNA 31-mers    : gamma = 0.858   core 14, shell 2854, cloud 14557
+   protein 7-mers : gamma = 0.384   core 296, shell 658, cloud 864
+==========================================================================

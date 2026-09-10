@@ -1,0 +1,32 @@
+type	start	end	description
+Topological domain	1	75	Cytoplasmic
+Transmembrane	76	105	Helical; Name=1
+Topological domain	106	108	Extracellular
+Transmembrane	109	126	Helical; Name=2
+Topological domain	127	137	Cytoplasmic
+Transmembrane	138	151	Helical; Name=3
+Topological domain	152	168	Extracellular
+Transmembrane	169	196	Helical; Name=4
+Topological domain	197	206	Cytoplasmic
+Transmembrane	207	230	Helical; Name=5a
+Topological domain	231	241	Extracellular
+Topological domain	254	258	Extracellular
+Transmembrane	259	282	Helical; Name=6
+Topological domain	283	291	Cytoplasmic
+Transmembrane	292	307	Helical; Name=7
+Topological domain	308	332	Extracellular
+Transmembrane	333	367	Helical; Name=8
+Topological domain	368	370	Cytoplasmic
+Transmembrane	371	388	Helical; Name=9
+Topological domain	389	396	Extracellular
+Transmembrane	397	406	Helical; Name=10
+Topological domain	407	410	Cytoplasmic
+Transmembrane	411	432	Helical; Name=11
+Topological domain	433	436	Extracellular
+Transmembrane	437	464	Helical; Name=12
+Topological domain	465	465	Cytoplasmic
+Transmembrane	466	481	Helical; Name=13
+Topological domain	482	483	Extracellular
+Transmembrane	484	504	Helical; Name=14
+Topological domain	505	744	Cytoplasmic
+Domain	525	713	STAS

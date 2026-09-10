@@ -1,0 +1,41 @@
+==========================================================================
+                   PRESTIN  (SLC26A5)  vs  ECHOLOCATION                   
+==========================================================================
+Outer-hair-cell motor protein. The classic PhyloG2P test case.
+
+1. DATASET (real RefSeq coding sequences)
+   Dolphin           2226 bp   741 aa  Cetacea        ECHOLOCATING
+   SpermWhale        2226 bp   741 aa  Cetacea        ECHOLOCATING
+   HorseshoeBat      2226 bp   741 aa  Chiroptera     ECHOLOCATING
+   LittleBrownBat    2229 bp   742 aa  Chiroptera     ECHOLOCATING
+   FruitBat          2223 bp   740 aa  Chiroptera     -
+   Cow               2226 bp   741 aa  Artiodactyla   -
+   Horse             2226 bp   741 aa  Perissodactyla -
+   Human             2235 bp   744 aa  Primates       -
+   Mouse             2235 bp   744 aa  Rodentia       -
+   Elephant          2241 bp   746 aa  Proboscidea    -
+   codon-aware alignment: 2247 nt / 749 codons   reference: Human
+
+2. PHYLOGENY
+   4 of 10 species are echolocating, across 2 clades:
+   Cetacea, Chiroptera
+   -> echolocation is polyphyletic here, so a residue shared by
+      all of them cannot be inherited: it is convergent.
+
+3. PhyloG2P CONVERGENCE SCAN
+   perfectly convergent sites : 2
+   permutation p-value        : 0.0127 (10,000 shuffles, null mean 0.06)
+   -> site 392: echolocating = A, others = S
+   -> site 576: echolocating = K, others = R
+
+4. PAN-GENOME GRAPH
+   nodes 1615  edges 2306  bubbles 458
+   node classes: core 458, shell 685, cloud 472
+   bubbles: 455 substitution, 3 indel/SV
+   reference bias: 1260 of 3492 bp (36.1%) of the graph is NOT
+   on the linear Human reference - invisible to a linear pipeline.
+
+5. PAN-GENOME OPENNESS (Heaps exponent; 0 = closed, 1 = wide open)
+   DNA 31-mers    : gamma = 0.861   core 11, shell 2679, cloud 13927
+   protein 7-mers : gamma = 0.395   core 350, shell 581, cloud 825
+==========================================================================

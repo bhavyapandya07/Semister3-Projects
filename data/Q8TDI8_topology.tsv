@@ -1,0 +1,22 @@
+type	start	end	description
+Topological domain	1	182	Cytoplasmic
+Transmembrane	183	220	Helical
+Topological domain	221	271	Extracellular
+Transmembrane	272	303	Helical
+Topological domain	304	359	Cytoplasmic
+Transmembrane	360	390	Helical
+Topological domain	391	402	Extracellular
+Transmembrane	403	430	Helical
+Topological domain	431	434	Cytoplasmic
+Transmembrane	435	469	Helical
+Topological domain	470	515	Extracellular
+Transmembrane	516	553	Helical
+Topological domain	554	572	Cytoplasmic
+Transmembrane	573	593	Helical
+Topological domain	594	596	Extracellular
+Transmembrane	597	619	Helical
+Topological domain	620	633	Cytoplasmic
+Transmembrane	634	657	Helical
+Topological domain	658	700	Extracellular
+Transmembrane	701	734	Helical
+Topological domain	735	760	Cytoplasmic

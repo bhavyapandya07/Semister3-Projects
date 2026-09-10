@@ -1,0 +1,31 @@
+type	start	end	description
+Topological domain	24	3064	Extracellular
+Transmembrane	3065	3085	Helical
+Topological domain	3086	3354	Cytoplasmic
+Domain	34	132	Cadherin 1
+Domain	133	236	Cadherin 2
+Domain	237	348	Cadherin 3
+Domain	349	460	Cadherin 4
+Domain	461	561	Cadherin 5
+Domain	562	671	Cadherin 6
+Domain	672	784	Cadherin 7
+Domain	779	890	Cadherin 8
+Domain	891	995	Cadherin 9
+Domain	996	1102	Cadherin 10
+Domain	1103	1208	Cadherin 11
+Domain	1210	1313	Cadherin 12
+Domain	1314	1418	Cadherin 13
+Domain	1420	1527	Cadherin 14
+Domain	1529	1634	Cadherin 15
+Domain	1635	1744	Cadherin 16
+Domain	1745	1851	Cadherin 17
+Domain	1852	1959	Cadherin 18
+Domain	1960	2069	Cadherin 19
+Domain	2070	2174	Cadherin 20
+Domain	2175	2293	Cadherin 21
+Domain	2297	2402	Cadherin 22
+Domain	2403	2509	Cadherin 23
+Domain	2510	2611	Cadherin 24
+Domain	2614	2722	Cadherin 25
+Domain	2729	2846	Cadherin 26
+Domain	2847	2975	Cadherin 27

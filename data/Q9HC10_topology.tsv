@@ -1,0 +1,11 @@
+type	start	end	description
+Topological domain	1	1963	Cytoplasmic
+Transmembrane	1964	1984	Helical; Anchor for type IV membrane protein
+Topological domain	1985	1997	Extracellular
+Domain	1	98	C2 1
+Domain	236	357	C2 2
+Domain	400	531	C2 3
+Domain	944	1069	C2 4
+Domain	1115	1242	C2 5
+Domain	1464	1593	C2 6
+Domain	1714	1865	C2 7

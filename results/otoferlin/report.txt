@@ -1,0 +1,41 @@
+==========================================================================
+                   OTOFERLIN  (OTOF)  vs  ECHOLOCATION                    
+==========================================================================
+Calcium sensor for transmitter release at the inner-hair-cell synapse.
+
+1. DATASET (real RefSeq coding sequences)
+   Dolphin           6003 bp  2000 aa  Cetacea        ECHOLOCATING
+   SpermWhale        6003 bp  2000 aa  Cetacea        ECHOLOCATING
+   HorseshoeBat      5982 bp  1993 aa  Chiroptera     ECHOLOCATING
+   FruitBat          5997 bp  1998 aa  Chiroptera     -
+   Cow               5997 bp  1998 aa  Artiodactyla   -
+   Horse             5988 bp  1995 aa  Perissodactyla -
+   Human             5994 bp  1997 aa  Primates       -
+   Mouse             5994 bp  1997 aa  Rodentia       -
+   Elephant          6003 bp  2000 aa  Proboscidea    -
+   codon-aware alignment: 6075 nt / 2025 codons   reference: Human
+
+2. PHYLOGENY
+   3 of 9 species are echolocating, across 2 clades:
+   Cetacea, Chiroptera
+   -> echolocation is polyphyletic here, so a residue shared by
+      all of them cannot be inherited: it is convergent.
+
+3. PhyloG2P CONVERGENCE SCAN
+   perfectly convergent sites : 3
+   permutation p-value        : 0.0352 (10,000 shuffles, null mean 0.57)
+   -> site 396: echolocating = E, others = D
+   -> site 1556: echolocating = L, others = M
+   -> site 1983: echolocating = F, others = L
+
+4. PAN-GENOME GRAPH
+   nodes 4110  edges 5853  bubbles 1182
+   node classes: core 1182, shell 1818, cloud 1110
+   bubbles: 1174 substitution, 8 indel/SV
+   reference bias: 3079 of 9070 bp (33.9%) of the graph is NOT
+   on the linear Human reference - invisible to a linear pipeline.
+
+5. PAN-GENOME OPENNESS (Heaps exponent; 0 = closed, 1 = wide open)
+   DNA 31-mers    : gamma = 0.883   core 2, shell 6750, cloud 36611
+   protein 7-mers : gamma = 0.388   core 763, shell 1705, cloud 2125
+==========================================================================
