@@ -1,0 +1,28 @@
+# =============================================================================
+# requirements.txt
+# Probabilistic Medical Diagnostic Assistant - Python Dependencies
+#
+# How to install:
+#   pip install -r requirements.txt
+#
+# Tested with Python 3.9 and above.
+# =============================================================================
+
+# Web UI framework
+streamlit>=1.28.0
+
+# Deep learning framework (CPU version - no GPU required for this project)
+torch>=2.0.0
+torchvision>=0.15.0
+
+# Numerical computing
+numpy>=1.24.0
+
+# Data manipulation and DataFrames
+pandas>=2.0.0
+
+# Database ORM
+sqlalchemy>=2.0.0
+
+# Plotting library (used in app.py for the MC histogram)
+matplotlib>=3.7.0
