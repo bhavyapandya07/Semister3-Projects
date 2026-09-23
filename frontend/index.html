@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Student Result Management System</title>
+<style>
+  :root {
+    --bg: #0f1220; --panel: #171b2e; --border: #2a3050; --text: #e7e9f5;
+    --muted: #8b90b3; --accent: #6f7bff; --a: #33c17a; --b: #6f7bff;
+    --c: #f2c94c; --d: #f2994a; --f: #eb5757;
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: system-ui, sans-serif; background:var(--bg); color:var(--text); }
+  header { padding:16px 24px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+  header h1 { font-size:18px; margin:0; }
+  nav { display:flex; gap:8px; padding:12px 24px; border-bottom:1px solid var(--border); flex-wrap:wrap; }
+  nav button { background:var(--panel); color:var(--text); border:1px solid var(--border); padding:8px 14px; border-radius:8px; cursor:pointer; font-size:13px; }
+  nav button.active { background:var(--accent); border-color:var(--accent); }
+  main { padding:24px; max-width:1000px; margin:0 auto; }
+  .panel { background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:20px; margin-bottom:16px; }
+  label { display:block; font-size:12px; color:var(--muted); margin:10px 0 4px; }
+  input, select { width:100%; padding:8px 10px; background:#0f1220; border:1px solid var(--border); color:var(--text); border-radius:6px; }
+  button.btn { background:var(--accent); color:#fff; border:none; padding:9px 16px; border-radius:8px; cursor:pointer; margin-top:14px; font-size:13px; }
+  button.btn.secondary { background:transparent; border:1px solid var(--border); color:var(--text); }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  th, td { text-align:left; padding:8px 10px; border-bottom:1px solid var(--border); }
+  th { color:var(--muted); font-weight:500; }
+  .grade { display:inline-block; padding:2px 8px; border-radius:6px; font-weight:600; font-size:12px; }
+  .grade-A { background:rgba(51,193,122,.15); color:var(--a); }
+  .grade-B { background:rgba(111,123,255,.15); color:var(--b); }
+  .grade-C { background:rgba(242,201,76,.15); color:var(--c); }
+  .grade-D { background:rgba(242,153,74,.15); color:var(--d); }
+  .grade-F { background:rgba(235,87,87,.15); color:var(--f); }
+  .bar-row { display:flex; align-items:center; gap:10px; margin:8px 0; }
+  .bar-label { width:70px; font-size:12px; color:var(--muted); }
+  .bar-track { flex:1; background:#0f1220; border-radius:4px; overflow:hidden; height:18px; }
+  .bar-fill { height:100%; border-radius:4px; }
+  .stat-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:16px; }
+  .stat { background:#0f1220; border:1px solid var(--border); border-radius:8px; padding:12px; text-align:center; }
+  .stat .val { font-size:22px; font-weight:700; }
+  .stat .lbl { font-size:11px; color:var(--muted); text-transform:uppercase; }
+  .msg { font-size:13px; padding:8px 12px; border-radius:6px; margin-top:10px; }
+  .msg.err { background:rgba(235,87,87,.15); color:var(--f); }
+  .msg.ok { background:rgba(51,193,122,.15); color:var(--a); }
+  .muted { color:var(--muted); font-size:12px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>SRMS</h1>
+  <div id="whoami" class="muted"></div>
+</header>
+
+<nav id="nav" style="display:none">
+  <button data-view="entry">Marks Entry</button>
+  <button data-view="results">Results</button>
+  <button data-view="dashboard">Dashboard</button>
+  <button data-view="transcript">Transcript</button>
+  <button data-view="import">Bulk Import</button>
+  <button class="secondary" id="logoutBtn" style="margin-left:auto">Log out</button>
+</nav>
+
+<main>
+
+  <div class="panel" id="loginPanel">
+    <h2>Log in</h2>
+    <label>Email</label>
+    <input id="loginEmail" placeholder="admin@srms.edu" />
+    <label>Password</label>
+    <input id="loginPassword" type="password" placeholder="password123" />
+    <button class="btn" id="loginBtn">Log in</button>
+    <div id="loginMsg"></div>
+    <p class="muted">Seed demo logins: admin@srms.edu / hod@srms.edu / faculty1@srms.edu / student1@srms.edu — password: password123</p>
+  </div>
+
+  <div class="panel" id="view-entry" style="display:none">
+    <h2>Marks Entry</h2>
+    <label>Course ID</label>
+    <input id="entryCourseId" placeholder="Mongo _id of the course" />
+    <label>Student ID</label>
+    <input id="entryStudentId" placeholder="Mongo _id of the student" />
+    <label>Semester</label>
+    <input id="entrySemester" type="number" value="4" />
+    <label>Internal</label>
+    <input id="entryInternal" type="number" placeholder="0-20" />
+    <label>Midterm</label>
+    <input id="entryMidterm" type="number" placeholder="0-30" />
+    <label>Final</label>
+    <input id="entryFinal" type="number" placeholder="0-50" />
+    <button class="btn" id="entrySubmit">Create Enrollment</button>
+    <div id="entryMsg"></div>
+  </div>
+
+  <div class="panel" id="view-results" style="display:none">
+    <h2>Course Roster</h2>
+    <label>Course ID</label>
+    <input id="resultsCourseId" placeholder="Mongo _id of the course" />
+    <button class="btn" id="resultsLoad">Load Roster</button>
+    <div id="resultsTable"></div>
+  </div>
+
+  <div class="panel" id="view-dashboard" style="display:none">
+    <h2>Course Dashboard</h2>
+    <label>Course ID</label>
+    <input id="dashCourseId" placeholder="Mongo _id of the course" />
+    <button class="btn" id="dashLoad">Load</button>
+    <div id="dashStats" class="stat-grid" style="margin-top:16px"></div>
+    <div id="dashChart"></div>
+  </div>
+
+  <div class="panel" id="view-transcript" style="display:none">
+    <h2>Transcript</h2>
+    <label>Student ID</label>
+    <input id="transStudentId" placeholder="Mongo _id of the student" />
+    <button class="btn" id="transLoad">Load Transcript</button>
+    <div id="transOut"></div>
+  </div>
+
+  <div class="panel" id="view-import" style="display:none">
+    <h2>Bulk Import (CSV)</h2>
+    <p class="muted">Columns: rollNumber,courseCode,semester,internal,midterm,final</p>
+    <input type="file" id="importFile" accept=".csv" />
+    <button class="btn" id="importSubmit">Upload &amp; Import</button>
+    <div id="importOut"></div>
+  </div>
+
+</main>
+
+<script>
+const API = "http://localhost:5000/api";
+let token = null, user = null;
+
+function authHeaders() {
+  return token ? { Authorization: "Bearer " + token } : {};
+}
+
+async function api(path, opts = {}) {
+  const res = await fetch(API + path, {
+    ...opts,
+    headers: { "Content-Type": "application/json", ...authHeaders(), ...(opts.headers || {}) },
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || res.statusText);
+  return data;
+}
+
+function gradeSpan(g) {
+  return `<span class="grade grade-${g}">${g}</span>`;
+}
+
+// ---- login ----
+document.getElementById("loginBtn").onclick = async () => {
+  const email = document.getElementById("loginEmail").value;
+  const password = document.getElementById("loginPassword").value;
+  const msg = document.getElementById("loginMsg");
+  try {
+    const data = await api("/auth/login", { method: "POST", body: JSON.stringify({ email, password }) });
+    token = data.token; user = data.user;
+    document.getElementById("loginPanel").style.display = "none";
+    document.getElementById("nav").style.display = "flex";
+    document.getElementById("whoami").textContent = `${email} (${user.role})`;
+    showView("entry");
+    msg.innerHTML = "";
+  } catch (e) {
+    msg.innerHTML = `<div class="msg err">${e.message}</div>`;
+  }
+};
+
+document.getElementById("logoutBtn").onclick = () => {
+  token = null; user = null;
+  document.getElementById("nav").style.display = "none";
+  document.getElementById("loginPanel").style.display = "block";
+  document.querySelectorAll("main > .panel[id^='view-']").forEach(p => p.style.display = "none");
+};
+
+// ---- nav ----
+document.querySelectorAll("#nav button[data-view]").forEach(btn => {
+  btn.onclick = () => showView(btn.dataset.view);
+});
+function showView(name) {
+  document.querySelectorAll("main > .panel[id^='view-']").forEach(p => p.style.display = "none");
+  document.getElementById("view-" + name).style.display = "block";
+  document.querySelectorAll("#nav button[data-view]").forEach(b => b.classList.toggle("active", b.dataset.view === name));
+}
+
+// ---- marks entry ----
+document.getElementById("entrySubmit").onclick = async () => {
+  const msg = document.getElementById("entryMsg");
+  try {
+    const body = {
+      student: document.getElementById("entryStudentId").value,
+      course: document.getElementById("entryCourseId").value,
+      semester: Number(document.getElementById("entrySemester").value),
+      assessments: [
+        { kind: "internal", marks: Number(document.getElementById("entryInternal").value), maxMarks: 20 },
+        { kind: "midterm", marks: Number(document.getElementById("entryMidterm").value), maxMarks: 30 },
+        { kind: "final", marks: Number(document.getElementById("entryFinal").value), maxMarks: 50 },
+      ],
+    };
+    const enrollment = await api("/enrollments", { method: "POST", body: JSON.stringify(body) });
+    msg.innerHTML = `<div class="msg ok">Created — total ${enrollment.totalMarks}, grade ${enrollment.grade}</div>`;
+  } catch (e) {
+    msg.innerHTML = `<div class="msg err">${e.message}</div>`;
+  }
+};
+
+// ---- results table ----
+document.getElementById("resultsLoad").onclick = async () => {
+  const courseId = document.getElementById("resultsCourseId").value;
+  const out = document.getElementById("resultsTable");
+  try {
+    const rows = await api(`/enrollments/course/${courseId}`);
+    out.innerHTML = `
+      <table>
+        <thead><tr><th>Roll No</th><th>Name</th><th>Total</th><th>Grade</th></tr></thead>
+        <tbody>
+          ${rows.map(r => `
+            <tr>
+              <td>${r.student?.rollNumber ?? ""}</td>
+              <td>${r.student?.name ?? ""}</td>
+              <td>${r.totalMarks}</td>
+              <td>${gradeSpan(r.grade)}</td>
+            </tr>`).join("")}
+        </tbody>
+      </table>`;
+  } catch (e) {
+    out.innerHTML = `<div class="msg err">${e.message}</div>`;
+  }
+};
+
+// ---- dashboard: summary + hand-rolled CSS bar chart from histogram ----
+document.getElementById("dashLoad").onclick = async () => {
+  const courseId = document.getElementById("dashCourseId").value;
+  const statsEl = document.getElementById("dashStats");
+  const chartEl = document.getElementById("dashChart");
+  try {
+    const [summary, histogram] = await Promise.all([
+      api(`/reports/course/${courseId}/summary`),
+      api(`/reports/course/${courseId}/histogram`),
+    ]);
+    statsEl.innerHTML = `
+      <div class="stat"><div class="val">${summary.count}</div><div class="lbl">Enrolled</div></div>
+      <div class="stat"><div class="val">${summary.average}</div><div class="lbl">Average</div></div>
+      <div class="stat"><div class="val">${summary.passRate}%</div><div class="lbl">Pass rate</div></div>
+      <div class="stat"><div class="val">${summary.highest} / ${summary.lowest}</div><div class="lbl">High / Low</div></div>`;
+
+    const max = Math.max(1, ...histogram.map(h => h.count));
+    const colors = { F: "var(--f)", D: "var(--d)", C: "var(--c)", B: "var(--b)", A: "var(--a)" };
+    chartEl.innerHTML = histogram.map(h => `
+      <div class="bar-row">
+        <div class="bar-label">${h.band}</div>
+        <div class="bar-track"><div class="bar-fill" style="width:${(h.count / max) * 100}%; background:${colors[h.band] || "var(--accent)"}"></div></div>
+        <div style="width:24px; text-align:right; font-size:12px">${h.count}</div>
+      </div>`).join("");
+  } catch (e) {
+    statsEl.innerHTML = `<div class="msg err">${e.message}</div>`;
+    chartEl.innerHTML = "";
+  }
+};
+
+// ---- transcript ----
+document.getElementById("transLoad").onclick = async () => {
+  const studentId = document.getElementById("transStudentId").value;
+  const out = document.getElementById("transOut");
+  try {
+    const data = await api(`/reports/student/${studentId}/transcript`);
+    out.innerHTML = `
+      <div class="stat" style="max-width:160px; margin-bottom:14px"><div class="val">${data.gpa}</div><div class="lbl">GPA</div></div>
+      <table>
+        <thead><tr><th>Course</th><th>Sem</th><th>Marks</th><th>Grade</th></tr></thead>
+        <tbody>
+          ${data.courses.map(c => `
+            <tr>
+              <td>${c.courseCode} — ${c.courseTitle}</td>
+              <td>${c.semester}</td>
+              <td>${c.totalMarks}</td>
+              <td>${gradeSpan(c.grade)}</td>
+            </tr>`).join("")}
+        </tbody>
+      </table>`;
+  } catch (e) {
+    out.innerHTML = `<div class="msg err">${e.message}</div>`;
+  }
+};
+
+// ---- bulk import ----
+document.getElementById("importSubmit").onclick = async () => {
+  const fileInput = document.getElementById("importFile");
+  const out = document.getElementById("importOut");
+  if (!fileInput.files.length) { out.innerHTML = `<div class="msg err">Choose a CSV file first</div>`; return; }
+  const fd = new FormData();
+  fd.append("file", fileInput.files[0]);
+  try {
+    const res = await fetch(API + "/enrollments/import", { method: "POST", headers: authHeaders(), body: fd });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Import failed");
+    out.innerHTML = `
+      <div class="msg ok">Imported ${data.imported} rows. ${data.failedCount} failed.</div>
+      ${data.failures.length ? `<table><thead><tr><th>Row</th><th>Reason</th></tr></thead><tbody>
+        ${data.failures.map(f => `<tr><td>${f.row}</td><td>${f.reason}</td></tr>`).join("")}
+      </tbody></table>` : ""}`;
+  } catch (e) {
+    out.innerHTML = `<div class="msg err">${e.message}</div>`;
+  }
+};
+</script>
+</body>
+</html>
