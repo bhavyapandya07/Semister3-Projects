@@ -1,4 +1,13 @@
+
+
 # P4 — Student Result Management System
+
+Project Members
+- Bhavya Pandya
+- Adarsh Madivala
+- Avatar Pacharane
+- Vaishnavi Magadum
+- Sakshi Paradkar
 
 ## Setup
 
