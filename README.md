@@ -27,13 +27,13 @@ This project is a Big Data Recommendation System, similar to the engines used by
 
 ## 🏗️ System Architecture
 
-1. **📥 Data Ingestion**: `events.csv` is read via PySpark, distributed across local cores.
-2. **⚙️ Preprocessing & Scoring**: Events mapped to implicit feedback scores.
-3. **🔢 ID Indexing**: StringIndexer converts String IDs to Integer indices for ALS.
-4. **🤖 ALS Model Training**: ALS with `implicitPrefs=True`, `rank=20`, `maxIter=10`, `regParam=0.1`.
-5. **📊 Evaluation**: RegressionEvaluator computes RMSE on a 20% test split.
-6. **💾 Parquet Output**: Top-5 recommendations for every user are saved as a lightweight Parquet file.
-7. **🖥️ Streamlit Dashboard**: An interactive UI to visualize user history and personalized recommendations.
+1. ** Data Ingestion**: `events.csv` is read via PySpark, distributed across local cores.
+2. ** Preprocessing & Scoring**: Events mapped to implicit feedback scores.
+3. ** ID Indexing**: StringIndexer converts String IDs to Integer indices for ALS.
+4. ** ALS Model Training**: ALS with `implicitPrefs=True`, `rank=20`, `maxIter=10`, `regParam=0.1`.
+5. ** Evaluation**: RegressionEvaluator computes RMSE on a 20% test split.
+6. ** Parquet Output**: Top-5 recommendations for every user are saved as a lightweight Parquet file.
+7. ** Streamlit Dashboard**: An interactive UI to visualize user history and personalized recommendations.
 
 ## 🚀 Running the Project
 
