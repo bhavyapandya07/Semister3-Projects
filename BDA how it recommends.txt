@@ -1,0 +1,74 @@
+How the Recommendation Works — From Zero to "You Might Like This"
+🧠 The Core Idea — "You Are What You Click"
+The model never looks at what a product IS (no product name, no category, no price).
+
+It only asks one question:
+
+"Which users behaved similarly to you in the past?"
+
+If User A and User B both viewed and bought the same 10 products → they have similar taste → whatever User B bought that User A hasn't seen yet → recommend it to User A.
+
+This is called Collaborative Filtering — users collaborate (unknowingly) to filter recommendations for each other.
+
+📊 Step 1 — Build the User-Item Matrix
+First, we take all interactions and build a giant table:
+
+            Item 101  Item 202  Item 303  Item 404  Item 505
+User 684514    1.0       3.0       0         5.0       0
+User 599528    0         1.0       1.0       0         3.0
+User 158090    5.0       0         3.0       0         1.0
+User 102019    0         0         1.0       3.0       0
+1.0 = viewed it
+3.0 = added to cart
+5.0 = bought it
+0 = never interacted
+This matrix is 100,000 users × 109,845 items — mostly zeros (most users haven't seen most products). This is called a sparse matrix.
+
+🔢 Step 2 — ALS Breaks the Matrix Into Two Smaller Ones
+ALS (Alternating Least Squares) factorizes this huge matrix into two tiny ones:
+
+Big Matrix (100K × 109K)
+         ↓ ALS splits into ↓
+User Matrix (100K × 20)    ×    Item Matrix (20 × 109K)
+Each user gets a vector of 20 numbers → their "taste fingerprint" Each item gets a vector of 20 numbers → its "feature fingerprint"
+
+For example:
+
+User 684514  →  [0.8, 0.2, 0.5, 0.1, 0.9, ...]  ← 20 numbers
+Item 218942  →  [0.7, 0.3, 0.4, 0.2, 0.8, ...]  ← 20 numbers
+These 20 numbers don't have human-readable meanings — they're hidden features the model figures out on its own (like "user likes electronics", "user prefers cheap items" etc.)
+
+🎯 Step 3 — Predict Score = Dot Product
+To find out how much User 684514 would like Item 218942:
+
+Score = User Vector · Item Vector (dot product)
+= (0.8×0.7) + (0.2×0.3) + (0.5×0.4) + (0.1×0.2) + (0.9×0.8) + ...
+= 0.56 + 0.06 + 0.20 + 0.02 + 0.72 + ...
+= some score (higher = more likely to like it)
+We do this calculation for every item the user hasn't interacted with yet, then pick the top 5 highest scores → those are the recommendations!
+
+🔄 Step 4 — How ALS "Learns" (The Alternating Part)
+ALS doesn't know the right vectors from the start. It alternates back and forth to improve them:
+
+Round 1: Fix Item vectors → Solve for best User vectors
+Round 2: Fix User vectors → Solve for best Item vectors
+Round 3: Fix Item vectors → Solve for best User vectors
+...repeat 10 times (maxIter=10)
+Each round makes the predictions more accurate. After 10 rounds, the vectors are good enough → training is done in 79 seconds.
+
+🏁 The Full Flow — One User Example
+User 684514's history:
+  viewed   → Item 101, 202, 303
+  added    → Item 404
+  bought   → Item 505
+           ↓ ALS learns ↓
+User 684514's taste vector: [0.8, 0.2, 0.5, 0.1, 0.9 ...]
+           ↓ Dot product with every unseen item ↓
+Item 218942 score → 3.92  ← #1 Recommend  ✅
+Item 776543 score → 3.71  ← #2 Recommend  ✅
+Item 334421 score → 3.55  ← #3 Recommend  ✅
+Item 129834 score → 3.40  ← #4 Recommend  ✅
+Item 092341 score → 3.28  ← #5 Recommend  ✅
+Item 001234 score → 0.12  ← Don't show    ❌
+🎤 Say This to Your Teacher
+"ALS decomposes the user-item interaction matrix into two low-rank matrices — a user factor matrix and an item factor matrix, each with rank 20. For any user-item pair not seen during training, we predict the interaction score as the dot product of the user's latent vector and the item's latent vector. We then rank all unseen items by this predicted score and return the top 5 as recommendations."

@@ -1,0 +1,12 @@
+{
+  "total_events": 1022057,
+  "unique_users": 100000,
+  "unique_items": 109845,
+  "rmse": 1.308574,
+  "rec_count": 499825,
+  "top_n_users": 100000,
+  "als_rank": 20,
+  "als_maxIter": 10,
+  "als_regParam": 0.1,
+  "implicit_prefs": true
+}
