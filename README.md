@@ -1,5 +1,11 @@
 # Student Result Management System (SRMS)
 
+- Adarsh Madivala
+- Vaishnavi Magadum
+- Avatar Pacharane
+- Bhavya Pandya
+- Sakshi Paradkar
+
 Welcome to the **Student Result Management System (SRMS)**! This project is a comprehensive, full-stack web application designed to manage student enrollments, courses, and academic results efficiently. It features a robust role-based access control system catering to Students, Faculty, Head of Departments (HOD), and Administrators.
 
 The application is built using a modern TypeScript stack, with an **Express + MongoDB API** backend and a **React + Vite** frontend. A shared types directory ensures a strict HTTP contract between the client and server.
