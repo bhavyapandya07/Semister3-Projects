@@ -1,98 +1,125 @@
-# Student Result Management System (P4)
+# Student Result Management System (SRMS)
 
-This is a TypeScript + Express + MongoDB API and a separate React + TypeScript frontend. `shared/types.ts` is imported by both programs for the HTTP contract. The original supplied project is retained in `reference/`; run the upgraded app from this directory.
+Welcome to the **Student Result Management System (SRMS)**! This project is a comprehensive, full-stack web application designed to manage student enrollments, courses, and academic results efficiently. It features a robust role-based access control system catering to Students, Faculty, Head of Departments (HOD), and Administrators.
 
-## Run on Windows
+The application is built using a modern TypeScript stack, with an **Express + MongoDB API** backend and a **React + Vite** frontend. A shared types directory ensures a strict HTTP contract between the client and server.
 
-Prerequisites: Node.js 20 or newer and MongoDB Community Server running locally.
+## 🌟 Key Features
 
-1. Open PowerShell in this `srms` folder (the folder containing this README).
-2. Install the workspace dependencies once:
+- **Role-Based Access Control (RBAC):** Distinct roles and permissions for Admins, HODs, Faculty, and Students.
+- **Secure Authentication:** JWT-based authentication with short-lived access tokens and rotating HttpOnly refresh cookies for enhanced security against XSS and CSRF attacks.
+- **Result & Grade Management:** Faculty can manage course enrollments, grade students, and publish results.
+- **Bulk CSV Import:** High-performance streaming CSV import for batch uploading student marks. Processes data in chunks and yields to the event loop, ensuring the server remains responsive even during 10,000+ row imports.
+- **Advanced Analytics & Reports:** Uses MongoDB Aggregation pipelines to generate course summaries, grade histograms, student transcripts with weighted GPAs, and semester topper lists.
+- **Audit Trails:** Comprehensive audit logging for any amendments made to published results.
 
-   ```powershell
-   npm install
-   ```
+## 🛠️ Technology Stack
 
-3. Create the backend environment file:
+- **Backend:** Node.js, Express.js, TypeScript, MongoDB, Mongoose
+- **Frontend:** React, TypeScript, Vite, CSS (Responsive Grid/Flexbox)
+- **Shared:** TypeScript interfaces for API requests, responses, and data models.
 
-   ```powershell
-   Copy-Item backend\.env.example backend\.env
-   ```
+## 📂 Project Structure
 
-   For local development, the example connects to a separate database named `srms_p4`. Set `JWT_SECRET` to a private random value of at least 32 characters before using real data.
-
-4. Create the demo dataset. This clears and recreates the `srms_p4` database, so only run it when you are comfortable resetting this demo database:
-
-   ```powershell
-   npm run seed
-   ```
-
-5. Start the API and frontend together:
-
-   ```powershell
-   npm run dev
-   ```
-
-   Keep this window open. The API is at `http://localhost:5000`; the React app is at `http://localhost:5173`. Check the API at [http://localhost:5000/api/health](http://localhost:5000/api/health).
-
-6. Sign in at `http://localhost:5173` with one of these seeded accounts. All demo passwords are `StudentResult!2026`.
-
-   | Role | Email |
-   |---|---|
-   | Admin | `admin@srms.edu` |
-   | HOD | `hod@srms.edu` |
-   | Faculty | `faculty1@srms.edu` |
-   | Student | `student1@srms.edu` |
-
-Stop the processes with **Ctrl+C**. The database data remains, and next time you only need `npm run dev`; do not seed again unless you want a reset.
-
-## Common commands
-
-```powershell
-npm run build
-npm test
-npm run benchmark:toppers -w backend
+```text
+📦 AWT (Workspace Root)
+ ┣ 📂 backend/     # Express API, MongoDB models, business logic, and scripts
+ ┣ 📂 frontend/    # React SPA built with Vite
+ ┣ 📂 shared/      # Shared TypeScript types for API contracts
+ ┣ 📜 README.md    # You are here!
+ ┣ 📜 DESIGN.md    # Architecture, DB schema, and design decisions
+ ┣ 📜 MODULES.md   # Module-to-code map
+ ┣ 📜 SECURITY.md  # Threat model and security mechanisms
+ ┗ 📜 API_EXAMPLES.md # Example cURL requests for the API
 ```
 
-The benchmark expects the seed dataset with 10,000 enrollment records. To run the concurrency demonstration, start `npm run dev`, upload a 10,000-row CSV from **CSV import**, and request `http://localhost:5000/api/health` from another browser tab or terminal while the import is running. Record the observed response and timing under `evidence/` for submission; no measurements or screenshots are fabricated in this repository.
+## 🚀 Getting Started
 
-## CSV format
+Follow these steps to run the project locally on your machine.
 
-Header: `rollNumber,courseCode,semester,internal,midterm,final`. Marks are checked per row; allowed maxima are 20, 30, and 50. The import streams rows, processes 500-row batches with `bulkWrite`, reports progress in the API log, and returns row-level failure reasons.
+### Prerequisites
 
-## API outline
+- **Node.js:** v20 or newer
+- **MongoDB:** Community Server running locally (default port `27017`)
 
-| Method and path | Access | Behavior |
+### 1. Installation
+
+Open your terminal (PowerShell or Bash) in the root folder of this project (`AWT`) and install all workspace dependencies:
+
+```bash
+npm install
+```
+
+### 2. Environment Setup
+
+Create the backend environment variables file by copying the example file:
+
+**Windows (PowerShell):**
+```powershell
+Copy-Item backend\.env.example backend\.env
+```
+**Mac/Linux:**
+```bash
+cp backend/.env.example backend/.env
+```
+
+*(Note: For local development, the app connects to a local database named `srms_p4`. If you plan to use real data, ensure you change `JWT_SECRET` in `backend/.env` to a strong, random 32+ character string.)*
+
+### 3. Seed Demo Data
+
+Create the demo dataset to easily test the application. 
+> ⚠️ **Warning:** This command will clear and recreate the `srms_p4` database. Only run it when you want to reset the demo database.
+
+```bash
+npm run seed
+```
+
+### 4. Run the Application
+
+Start both the backend API and the frontend development server simultaneously:
+
+```bash
+npm run dev
+```
+
+Keep this terminal window open. 
+- The **Backend API** will run at: `http://localhost:5000` (Health check: [http://localhost:5000/api/health](http://localhost:5000/api/health))
+- The **Frontend App** will run at: `http://localhost:5173`
+
+*(To stop the servers, simply press `Ctrl + C` in the terminal.)*
+
+---
+
+## 👥 Usage & Demo Accounts
+
+Navigate to `http://localhost:5173` in your browser. You can sign in using any of the seeded accounts to explore different role perspectives. 
+
+**All demo accounts share the same password:** `StudentResult!2026`
+
+| Role | Email Address | Access Level |
 |---|---|---|
-| `POST /api/auth/register` | Public | Register against an existing student roll number |
-| `POST /api/auth/login` | Public, rate limited | Access token plus rotating HttpOnly refresh cookie |
-| `POST /api/auth/refresh` | Refresh cookie | Rotate session and issue a new access token |
-| `POST /api/auth/logout` | Refresh cookie | Revoke refresh session, return 204 |
-| `GET /api/auth/me` | Authenticated | Current account |
-| `PATCH /api/auth/password` | Authenticated | Change password and revoke previous sessions |
-| `/api/students` | Authenticated; writes admin only | Student CRUD; student reads are own-record only |
-| `/api/courses` | Authenticated; writes admin only | Course CRUD |
-| `/api/enrollments` | Faculty/HOD/admin, course scoped | Enrollment CRUD, publish, audit-tracked amendment |
-| `GET /api/reports/course/:id/summary` | Faculty/HOD/admin, course scoped | One aggregation for count, mean, pass rate, extrema |
-| `GET /api/reports/course/:id/histogram` | Faculty/HOD/admin, course scoped | `$bucket` grade histogram |
-| `GET /api/reports/student/:id/transcript` | Authenticated; students own only | `$lookup` transcript and weighted GPA |
-| `GET /api/reports/toppers?semester=4&limit=10` | Authenticated | Aggregated ranks; students see rank/name only |
-| `GET /api/reports/course/:id/toppers` | Enrolled students or course staff | Course ranks with role-based projection |
-| `GET /api/reports/enrollments-by-month?year=2026` | Faculty/HOD/admin | Monthly `$group`, zero-filled months |
-| `POST /api/enrollments/import` | Faculty/HOD/admin | Streaming CSV bulk import with per-row outcomes |
+| **Admin** | `admin@srms.edu` | Full system access, CRUD for users/courses |
+| **HOD** | `hod@srms.edu` | Department-level read/write access |
+| **Faculty** | `faculty1@srms.edu` | Course-level management, grading, imports |
+| **Student** | `student1@srms.edu` | View own transcript and toppers list |
 
-Every API route has a `curl.exe` example in [`API_EXAMPLES.md`](API_EXAMPLES.md). It includes the auth cookie flow, CRUD verbs, reports, and CSV upload.
+## 📜 Additional Documentation
 
-## Technical notes
+For deeper technical insights, please refer to the following documents included in the repository:
+- [**DESIGN.md**](./DESIGN.md) - Database schema, authorization matrix, token storage decisions.
+- [**MODULES.md**](./MODULES.md) - Module mappings and project-specific complex logic.
+- [**SECURITY.md**](./SECURITY.md) - Threat model, rate limiting, and security best practices.
+- [**API_EXAMPLES.md**](./API_EXAMPLES.md) - Detailed API routes and `curl` examples.
 
-- `backend/src/app.ts` exports the app without listening; only `backend/src/server.ts` calls `listen()`.
-- The frontend keeps short-lived access tokens in local storage and refresh tokens in an HttpOnly cookie. See `DESIGN.md` for the XSS/CSRF tradeoff.
-- Permission matrix and architecture are in `DESIGN.md`; threat write-up is in `SECURITY.md`; module map is in `MODULES.md`.
-- Test source is in `backend/__tests__`. The MongoDB memory-server suite may need network access the first time to obtain its MongoDB binary.
+## ⚡ Common Development Commands
 
-## Verification recorded for this copy
+```bash
+# Build the backend, frontend, and shared packages
+npm run build
 
-- `npm run build`: passed for shared types, strict TypeScript backend, and React frontend.
-- `npm test`: 3 suites and 17 tests passed, including a 10,000-row CSV import with a health request during processing.
-- `npm audit`: 0 vulnerabilities at dependency install time.
-- Toppers benchmark output is in `evidence/benchmark.md`.
+# Run the test suites
+npm test
+
+# Run the database aggregation benchmark for Toppers (requires seeded DB)
+npm run benchmark:toppers -w backend
+```
