@@ -1,0 +1,20 @@
+import { Router } from "express";
+import { z } from "zod";
+import * as ctrl from "../controllers/enrollment.controller";
+import { authenticate, authorize } from "../middleware/authenticate";
+import { asyncRoute } from "../middleware/errors";
+import { canReadCourseToppers, ownsCourse, ownsEnrollmentCourse, ownsEnrollmentRead, ownsSubmittedCourse } from "../middleware/ownership";
+import { validateBody } from "../middleware/validate";
+
+const router = Router();
+router.use(authenticate);
+const assessment = z.object({ kind: z.enum(["internal", "midterm", "final"]), marks: z.number().min(0), maxMarks: z.number().positive() });
+const createInput = z.object({ student: z.string().length(24), course: z.string().length(24), semester: z.number().int().min(1).max(12), assessments: z.array(assessment).length(3) });
+router.get("/course/:courseId", authorize("faculty", "hod", "admin"), ownsCourse, asyncRoute(ctrl.listCourse));
+router.get("/:id", ownsEnrollmentRead, asyncRoute(ctrl.get));
+router.post("/", authorize("faculty", "hod", "admin"), validateBody(createInput), ownsSubmittedCourse, asyncRoute(ctrl.create));
+router.put("/:id/marks", authorize("faculty", "hod", "admin"), ownsEnrollmentCourse, validateBody(z.object({ assessments: z.array(assessment).min(1) })), asyncRoute(ctrl.updateMarks));
+router.post("/:id/publish", authorize("faculty", "hod", "admin"), ownsEnrollmentCourse, asyncRoute(ctrl.publish));
+router.patch("/:id/amend", authorize("faculty", "hod", "admin"), ownsEnrollmentCourse, validateBody(z.object({ kind: z.enum(["internal", "midterm", "final"]), marks: z.number(), reason: z.string().min(1) })), asyncRoute(ctrl.amend));
+router.delete("/:id", authorize("admin"), asyncRoute(ctrl.remove));
+export default router;

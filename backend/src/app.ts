@@ -1,0 +1,27 @@
+import "dotenv/config";
+import express from "express";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import authRoutes from "./routes/auth.routes";
+import studentRoutes from "./routes/student.routes";
+import courseRoutes from "./routes/course.routes";
+import enrollmentRoutes from "./routes/enrollment.routes";
+import reportRoutes from "./routes/report.routes";
+import importRoutes from "./routes/import.routes";
+import { errorHandler, notFound } from "./middleware/errors";
+import { requestMetadata } from "./middleware/requestMetadata";
+
+export const app = express();
+app.use(cors({ origin: process.env.FRONTEND_ORIGIN ?? "http://localhost:5173", credentials: true }));
+app.use(express.json({ limit: "1mb" }));
+app.use(cookieParser());
+app.use(requestMetadata);
+app.get("/api/health", (_req, res) => res.json({ ok: true, service: "srms-api" }));
+app.use("/api/auth", authRoutes);
+app.use("/api/students", studentRoutes);
+app.use("/api/courses", courseRoutes);
+app.use("/api/enrollments", enrollmentRoutes);
+app.use("/api/enrollments/import", importRoutes);
+app.use("/api/reports", reportRoutes);
+app.use(notFound);
+app.use(errorHandler);
